@@ -123,7 +123,15 @@
     manageCheck: { th: "ตรวจสอบ", en: "Check" },
     manageCancel: { th: "ยกเลิกการจองนี้", en: "Cancel this booking" },
     guests: { th: "ท่าน", en: "guests" },
+    quickLabel: { th: "ค้นหาห้องว่าง", en: "Find a room" },
+    quickGo: { th: "ดูห้องว่าง", en: "Check availability" },
+    checkInAt: { th: "เช็กอิน", en: "Check-in" },
+    checkOutAt: { th: "เช็กเอาต์", en: "Check-out" },
+    roomOf: { th: "ห้อง", en: "Room" },
   };
+
+  // The hero photo's width on screen (used by <img sizes> and the preload, which must match).
+  const HERO_SIZES = "(min-width: 900px) 56vw, 100vw";
 
   const DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
   const DAY_NAMES = {
@@ -253,7 +261,7 @@
   function sectionHead(num, eyebrow, title, id, intro) {
     return (
       `<header class="section-head reveal">` +
-      `<p class="eyebrow"><span class="eyebrow__num">${num}</span><span class="eyebrow__rule" aria-hidden="true"></span>${t(eyebrow)}</p>` +
+      `<p class="eyebrow kicker"><span class="kicker__dot" aria-hidden="true"></span>${t(eyebrow)}</p>` +
       `<h2 class="section-title" id="${id}">${t(title)}</h2>` +
       (intro ? `<p class="section-intro">${t(intro)}</p>` : "") +
       `</header>`
@@ -286,6 +294,7 @@
       links.map(([id, label]) => `<li><a class="site-nav__link" href="#${id}">${t(label)}</a></li>`).join("") +
       `</ul></nav>` +
       `<div class="site-header__tools">` +
+      (bookingOn(c) ? `<a class="btn btn--primary header-book" href="#booking">${t(S.navBook)}</a>` : "") +
       `<div class="lang-toggle" role="group" ${attr("aria-label", S.langGroup)}>` +
       `<span class="lang-toggle__thumb" aria-hidden="true"></span>` +
       // Visible "TH"/"EN" + a hidden full name. Screen readers say "TH ภาษาไทย"; the spoken
@@ -326,22 +335,41 @@
         (v.mp4 ? `<source src="${esc(v.mp4)}" type="video/mp4">` : "") +
         `</video>`
       : "";
+    const bk = c.booking || {};
+    const nightOpts = Array.from({ length: bk.maxNights || 14 }, (_, i) => `<option value="${i + 1}"${i === 0 ? " selected" : ""}>${i + 1}</option>`).join("");
+    const maxGuests = Math.max(...c.signature.items.map((r) => r.sleeps || 2));
+    const guestOpts = Array.from({ length: maxGuests }, (_, i) => `<option value="${i + 1}"${i === 1 ? " selected" : ""}>${i + 1}</option>`).join("");
+    const quick = bookingOn(c)
+      ? `<form class="quick" data-quick hidden ${attr("aria-label", S.quickLabel)}>` +
+        `<div class="quick__field"><label class="quick__label" for="quick-checkin">${t(S.bookCheckIn)}</label><input class="quick__input" id="quick-checkin" type="date" data-quick-checkin></div>` +
+        `<div class="quick__field"><label class="quick__label" for="quick-nights">${t(S.bookNights)}</label><select class="quick__input" id="quick-nights" data-quick-nights>${nightOpts}</select></div>` +
+        `<div class="quick__field"><label class="quick__label" for="quick-guests">${t(S.bookGuests)}</label><select class="quick__input" id="quick-guests" data-quick-guests>${guestOpts}</select></div>` +
+        `<button type="submit" class="btn btn--primary btn--lg quick__go">${icon("arrow-right")}${t(S.quickGo)}</button>` +
+        `</form>`
+      : "";
+    const times = bk.checkIn
+      ? `<p class="hero__chip">${icon("clock")}<span>${t(S.checkInAt)} ${esc(bk.checkIn)} · ${t(S.checkOutAt)} ${esc(bk.checkOut)}</span></p>`
+      : "";
     return (
-      `<div class="hero__media" data-parallax>${picture(c, c.hero.photo, { eager: true, portrait: true, sizes: "100vw", cls: "hero__picture" })}${video}</div>` +
-      `<div class="hero__scrim" aria-hidden="true"></div>` +
-      `<div class="hero__content container">` +
-      `<p class="eyebrow eyebrow--light hero__eyebrow" data-hero-reveal>${t(b.eyebrow)}</p>` +
+      `<div class="container hero__grid">` +
+      `<div class="hero__content">` +
+      `<p class="eyebrow kicker hero__eyebrow" data-hero-reveal><span class="kicker__dot" aria-hidden="true"></span>${t(b.eyebrow)}</p>` +
       `<h1 class="hero__title" id="hero-title" data-hero-reveal>${t(b.name)}</h1>` +
       `<p class="hero__tagline" data-hero-reveal>${t(b.tagline)}</p>` +
-      `<a class="status" href="#hours" data-open-status data-hero-reveal>` +
-      `<span class="status__dot" aria-hidden="true"></span><span class="status__text">${t(S.hoursLink)}</span></a>` +
       `<div class="hero__actions" data-hero-reveal>` +
       (bookingOn(c)
-        ? `<a class="btn btn--light btn--lg" href="#booking">${t(c.booking.title)}</a>`
-        : extLink(c.contact.line.url, `${icon("chat")}${t(S.addLine)}`, "btn btn--light btn--lg", S)) +
-      extLink(directionsUrl(c), `${icon("pin")}${t(S.directions)}`, "btn btn--glass btn--lg", S) +
+        ? `<a class="btn btn--primary btn--lg" href="#booking">${t(c.booking.title)}</a>`
+        : extLink(c.contact.line.url, `${icon("chat")}${t(S.addLine)}`, "btn btn--primary btn--lg", S)) +
+      extLink(directionsUrl(c), `${icon("pin")}${t(S.directions)}`, "btn btn--ghost btn--lg", S) +
+      `</div>` +
+      `<a class="status" href="#hours" data-open-status data-hero-reveal>` +
+      `<span class="status__dot" aria-hidden="true"></span><span class="status__text">${t(S.hoursLink)}</span></a>` +
+      `</div>` +
+      `<div class="hero__frame">` +
+      `<div class="hero__media" data-parallax>${picture(c, c.hero.photo, { eager: true, portrait: true, sizes: HERO_SIZES, cls: "hero__picture" })}${video}</div>` +
+      times +
       `</div></div>` +
-      `<a class="hero__scroll" href="#signature" ${attr("aria-label", S.scrollCue)}><span class="hero__scroll-line" aria-hidden="true"></span></a>`
+      (quick ? `<div class="container hero__quick">${quick}</div>` : "")
     );
   };
 
@@ -399,11 +427,11 @@
     const sig = c.signature;
     const cards = sig.items
       .map(
-        (it) =>
+        (it, i) =>
           `<li class="sig-card room-card reveal" data-room="${esc(it.id)}">` +
-          `<div class="sig-card__media">${picture(c, it.photo, { sizes: "(min-width: 1100px) 270px, (min-width: 768px) 30vw, 72vw" })}` +
+          `<div class="sig-card__media">${picture(c, it.photo, { sizes: "(min-width: 900px) 52vw, 92vw" })}` +
           badges(it.badges, S, "sig-card__badges") + `</div>` +
-          `<div class="sig-card__body"><h3 class="sig-card__name">${t(it.name)}</h3>` +
+          `<div class="sig-card__body"><p class="room-card__index">${t(S.roomOf)} ${String(i + 1).padStart(2, "0")}</p><h3 class="sig-card__name">${t(it.name)}</h3>` +
           `<p class="room-card__meta">${t(S.sleeps)} ${it.sleeps} · ${it.size} ${t(S.sqm)}</p>` +
           `<p class="sig-card__desc">${t(it.desc)}</p>` +
           `<p class="room-card__price">${formatPrice(it.price, S)} <span class="room-card__per">${t(S.perNight)}</span></p>` +
@@ -415,9 +443,8 @@
       `<div class="container">` +
       sectionHead(num(c, "signature"), S.sigEyebrow, sig.title, "signature-title", sig.intro) +
       `</div>` +
-      // On phones this row scrolls sideways (CSS scroll-snap); on bigger screens it's a grid.
-      // tabindex=0 lets keyboard users focus the row and scroll it with the arrow keys.
-      `<ul class="sig-row" role="list" tabindex="0" data-scroll-row data-stagger ${attr("aria-label", sig.title)}>${cards}</ul>`
+      // One big row per room, photo and text taking turns left and right.
+      `<div class="container"><ul class="sig-row" role="list" ${attr("aria-label", sig.title)}>${cards}</ul></div>`
     );
   };
 
@@ -536,9 +563,9 @@
     const st = c.story;
     return (
       `<div class="container story__grid">` +
-      `<figure class="story__media reveal">${picture(c, st.photo, { sizes: "(min-width: 900px) 42vw, 88vw", cls: "arch" })}</figure>` +
+      `<figure class="story__media reveal">${picture(c, st.photo, { sizes: "(min-width: 900px) 60vw, 92vw", cls: "story__photo" })}</figure>` +
       `<div class="story__text">` +
-      `<p class="eyebrow eyebrow--light reveal"><span class="eyebrow__num">${num(c, "story")}</span><span class="eyebrow__rule" aria-hidden="true"></span>${t(S.storyEyebrow)}</p>` +
+      `<p class="eyebrow kicker reveal"><span class="kicker__dot" aria-hidden="true"></span>${t(S.storyEyebrow)}</p>` +
       `<h2 class="section-title reveal" id="story-title">${t(st.title)}</h2>` +
       st.body.map((p, i) => `<p class="story__p ${i === 0 ? "story__p--lead" : ""} reveal">${t(p)}</p>`).join("") +
       (st.signoff ? `<p class="story__signoff reveal">${t(st.signoff)}</p>` : "") +
@@ -712,7 +739,7 @@
       if (hero.portrait) {
         preload += `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero.portrait, "avif")}" imagesizes="100vw" media="(max-width: 767px)" fetchpriority="high">\n`;
       }
-      preload += `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero, "avif")}" imagesizes="100vw"${hero.portrait ? ' media="(min-width: 768px)"' : ""} fetchpriority="high">\n`;
+      preload += `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero, "avif")}" imagesizes="${HERO_SIZES}"${hero.portrait ? ' media="(min-width: 768px)"' : ""} fetchpriority="high">\n`;
     }
     return [
       `<title data-title-th="${esc(title.th)}" data-title-en="${esc(title.en)}">${esc(title[lang])}</title>`,

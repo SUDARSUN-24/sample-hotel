@@ -72,7 +72,8 @@ correct. Different code: re-render.
 | `js/concierge.js` | The voice concierge (section 12). |
 | `js/main.js` | **Everything interactive.** Language toggle, live open status, header, parallax, scroll reveals, menu tabs, lightbox, reviews carousel, map-on-tap, copy address, mobile menu, QR. |
 | `js/vendor/qrcode.js` | A small, well-known MIT-licensed QR code library, self-hosted. Loaded only when the QR is about to scroll into view. |
-| `css/styles.css` | The whole design, in 14 numbered sections (tokens → base → header → … → reduced motion). Colors are CSS variables, never hard-coded. |
+| `css/styles.css` | The shared template design, in 14 numbered sections (tokens → base → header → … → reduced motion). Colors are CSS variables, never hard-coded. |
+| `css/hotel.css` | **This hotel's own look**, loaded after `styles.css`: split hero with a check-availability bar, centred section heads, rooms as big alternating rows, dark booking section, extras as cards, story card over a wide photo, map first. Delete it to get the plain template look back. |
 | `css/shop.generated.css` | Written by the bake: this theme's color variables, and a tiny blurred version of each photo used as its placeholder. Lives in a file, not inline, because of the security policy (section 7). |
 | `css/404.css` | Styles for the 404 page (the steaming cup). |
 | `assets/fonts/` | The two typefaces as small WOFF2 files, plus their licences. See section 8. |

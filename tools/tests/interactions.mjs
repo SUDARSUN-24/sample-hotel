@@ -206,7 +206,8 @@ async function newPage(options = {}) {
   await page.click('.sheet__links a[href="#gallery"]');
   await page.waitForTimeout(1500);
   check("menu link closes the menu", !(await page.$eval("[data-sheet]", (d) => d.open)));
-  check("menu link scrolls to the section", await page.evaluate(() => Math.abs(document.querySelector("#gallery").getBoundingClientRect().top) < 30));
+  // Smooth scrolling on a long page can take a moment: wait (up to 5 s) for it to arrive.
+  check("menu link scrolls to the section", await page.waitForFunction(() => Math.abs(document.querySelector("#gallery").getBoundingClientRect().top) < 30, null, { timeout: 5000 }).then(() => true, () => false));
 
   /* -------------------------------------------------- map + copy address */
   await page.locator("[data-map-load]").scrollIntoViewIfNeeded();
@@ -279,7 +280,7 @@ async function newPage(options = {}) {
   const { ctx, page } = await newPage();
   await page.route("**/config.js", async (route) => {
     const res = await route.fetch();
-    const body = (await res.text()).replace('en: "Sample Hotel" }', 'en: "Preview Hotel" }').replace('theme: "tropicalDusk"', 'theme: "warmClassic"');
+    const body = (await res.text()).replace('en: "Sample Hotel" }', 'en: "Preview Hotel" }').replace('theme: "lannaGarden"', 'theme: "warmClassic"');
     route.fulfill({ response: res, body });
   });
   const info = [];

@@ -1,0 +1,266 @@
+/* =============================================================================
+   hotel.css — this hotel's own look, loaded after the shared template CSS.
+   -----------------------------------------------------------------------------
+   The template (styles.css) gives every shop the same parts. This file turns
+   them into a different design: clean sans headings, square-ish corners, a
+   split hero with a "check availability" bar, centred section heads, rooms as
+   big alternating rows, a dark booking section, extras as cards, a story card
+   over a wide photo, and the map before the directions.
+   Colours come from the "lannaGarden" theme in config.js.
+   ========================================================================== */
+
+:root {
+  --radius-sm: 0.375rem;
+  --radius: 0.625rem;
+  --radius-lg: 1rem;
+}
+
+/* ------------------------------------------------------------ base surfaces */
+body { background: var(--c-bg); }
+.section--alt { background: var(--c-bg-alt); }
+.section--dark, .site-footer, .qr-card { background: var(--c-dark); }
+
+/* ------------------------------------------------------------- typography */
+.section-title, .hero__title, .sig-card__name, .step__title, .footer__name, .brand { font-weight: 600; }
+.section-title { font-size: clamp(2rem, 1.35rem + 2.6vw, 3.5rem); }
+:root[lang="en"] .section-title { letter-spacing: -0.03em; line-height: 1.08; }
+
+/* Kicker: a small outlined label with a diamond, instead of "01 ——". */
+.kicker {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+  border-radius: var(--radius-pill);
+}
+.kicker__dot { width: 0.4rem; height: 0.4rem; background: currentColor; border-radius: 1px; transform: rotate(45deg); flex: none; }
+.section--dark .kicker { color: var(--c-on-dark-soft); }
+
+/* Centred section heads (the booking and contact columns stay left-aligned). */
+.section-head { margin-inline: auto; text-align: center; max-width: 44rem; }
+.section-intro { margin-inline: auto; }
+.book__intro .section-head, .contact .section-head { margin-inline: 0; text-align: start; }
+.book__intro .section-intro, .contact .section-intro { margin-inline: 0; }
+
+/* ---------------------------------------------------------------- buttons */
+.btn { border-radius: var(--radius-sm); font-weight: 600; }
+.btn--ghost { border-color: color-mix(in srgb, var(--c-ink) 35%, transparent); }
+
+/* ----------------------------------------------------------------- header */
+/* The hero is light now, so the header text is dark from the start. */
+.site-header { color: var(--c-ink); }
+.site-header:not(.is-scrolled) :focus-visible { outline-color: var(--c-accent); }
+.brand { font-size: 1.2rem; letter-spacing: -0.01em; }
+.header-book { min-height: 2.5rem; padding: 0.4rem 1rem; font-size: 0.9375rem; }
+@media (max-width: 419px) { .header-book { display: none; } }
+
+/* ------------------------------------------------------------------- hero */
+.hero {
+  display: block;
+  min-height: 0;
+  overflow: visible;
+  padding-top: calc(var(--header-h) + clamp(0.75rem, 3vw, 2rem));
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  color: var(--c-ink);
+  background: var(--c-bg);
+}
+@media (min-width: 768px) { .hero { min-height: 0; } }
+.hero :focus-visible { outline-color: var(--c-accent); }
+.hero__grid { display: grid; gap: 1.75rem; align-items: center; }
+@media (min-width: 900px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 4vw, 4.5rem);
+    /* Short enough that the availability bar sits above the floating concierge button. */
+    min-height: clamp(30rem, calc(100svh - var(--header-h) - 16rem), 42rem);
+  }
+}
+.hero__content { padding: 0; text-shadow: none; }
+.hero__eyebrow { margin-bottom: 1.4rem; }
+.hero__title {
+  max-width: 12ch;
+  font-size: clamp(2.75rem, 1.5rem + 4.8vw, 5.75rem);
+  color: var(--c-ink);
+}
+:root[lang="en"] .hero__title { letter-spacing: -0.04em; line-height: 0.98; }
+.hero__tagline { color: var(--c-ink-soft); max-width: 30rem; }
+.hero__actions { margin-top: 2rem; }
+.status {
+  margin-top: 1.5rem;
+  background: var(--c-bg-alt);
+  border: 1px solid var(--c-line);
+  color: var(--c-ink);
+}
+.status[data-state="open"] .status__dot { background: #2f8a4a; }
+.status[data-state="closing-soon"] .status__dot { background: #c98a1a; }
+.status[data-state="closed"] .status__dot { background: #c2412d; }
+
+/* The photo sits in a framed panel; the parallax layer moves inside the frame. */
+.hero__frame {
+  position: relative; isolation: isolate;
+  aspect-ratio: 5 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--c-sand);
+}
+@media (min-width: 900px) { .hero__frame { aspect-ratio: auto; height: 100%; min-height: 28rem; } }
+.hero__media { position: absolute; inset: -24% 0 0 0; z-index: -1; }
+.hero__chip {
+  position: absolute; left: 1rem; bottom: 1rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--c-bg) 94%, transparent);
+  color: var(--c-ink);
+  font-size: 0.875rem; font-weight: 500; line-height: 1.4;
+}
+.hero__chip .icon { width: 1.05rem; height: 1.05rem; color: var(--c-accent); }
+
+/* Check-availability bar (shown by booking.js once the booking system answers). */
+.hero__quick { margin-top: clamp(1.25rem, 3vw, 2rem); }
+.quick {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--c-dark);
+  color: var(--c-on-dark);
+}
+.quick[hidden] { display: none; }
+.quick__field:first-child, .quick__go { grid-column: 1 / -1; }
+@media (min-width: 760px) {
+  .quick { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto; align-items: end; padding: 1.1rem 1.1rem 1.1rem 1.5rem; }
+  .quick__field:first-child, .quick__go { grid-column: auto; }
+}
+.quick__label { display: block; margin-bottom: 0.3rem; font-size: 0.8125rem; font-weight: 600; color: var(--c-on-dark-soft); }
+.quick__input {
+  width: 100%; min-height: 3rem; padding: 0.5rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--c-on-dark) 35%, transparent);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--c-on-dark) 7%, var(--c-dark));
+  color: var(--c-on-dark);
+  color-scheme: dark;
+  font: inherit; font-size: 1rem;
+}
+.quick__input option { background: var(--c-bg); color: var(--c-ink); }
+.hero .quick :focus-visible { outline-color: var(--c-on-dark); }
+
+/* ------------------------------------------------------------------ rooms */
+/* One big row per room, photo and text swapping sides. */
+ul.sig-row {
+  display: grid; grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(3rem, 7vw, 6rem);
+  overflow: visible; scroll-snap-type: none;
+  padding: 0; margin: 0; max-width: none;
+}
+.sig-card { display: grid; gap: 1.25rem; align-items: center; }
+@media (min-width: 900px) {
+  .sig-card { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 5rem); }
+  .sig-card:nth-child(even) { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .sig-card:nth-child(even) .sig-card__media { order: 2; }
+}
+.sig-card__media { aspect-ratio: 3 / 2; border-radius: var(--radius-lg); }
+.sig-card__body { padding: 0; }
+.room-card__index { margin-bottom: 0.6rem; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-accent); }
+.sig-card__name { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.6rem); }
+:root[lang="en"] .sig-card__name { letter-spacing: -0.025em; line-height: 1.1; }
+.room-card__meta { margin-top: 0.6rem; font-size: 0.9375rem; font-weight: 500; }
+.sig-card__desc { margin-top: 0.9rem; max-width: 32rem; font-size: var(--step-0); line-height: var(--lh-body); }
+.room-card__price { margin-top: 1.25rem; padding-top: 1.1rem; border-top: 1px solid var(--c-line); }
+.sig-card .price { font-size: 1.5rem; }
+.room-card__book { margin-top: 1.25rem; background: var(--c-accent); border-color: transparent; color: var(--c-accent-ink); }
+@media (hover: hover) { .room-card__book:hover { background: var(--c-accent); } }
+
+/* ---------------------------------------------------------------- booking */
+.booking .section-intro, .booking .book__note { color: var(--c-on-dark-soft); }
+.book { background: var(--c-bg); color: var(--c-ink); box-shadow: none; }
+.section--dark .book :focus-visible { outline-color: var(--c-accent); }
+@media (min-width: 1100px) {
+  .room-pick { grid-template-columns: 1fr 1fr; }
+}
+
+/* ----------------------------------------------------------------- extras */
+.tabs__bar { display: flex; justify-content: center; border-bottom: 0; }
+.tabs__list {
+  display: inline-flex; max-width: 100%;
+  margin-inline: 0; padding: 0.3rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-pill);
+  background: var(--c-bg);
+}
+.tabs__tab {
+  position: relative; z-index: 1;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600; font-size: 0.9375rem;
+  transition: color 0.3s;
+}
+.tabs__tab[aria-selected="true"] { color: var(--c-accent-ink); }
+@media (hover: hover) { .tabs__tab[aria-selected="true"]:hover { color: var(--c-accent-ink); } }
+.tabs__indicator { top: 0.3rem; bottom: 0.3rem; height: auto; border-radius: var(--radius-pill); }
+.tabs__tab:focus-visible { outline-offset: 2px; }
+
+.menu-list { grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: 1rem; }
+@media (min-width: 768px) { .menu-list { grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); } }
+.menu-item {
+  display: flex; flex-direction: column;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background: var(--c-bg);
+}
+.menu-item__row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+.menu-item__name { font-weight: 600; font-size: var(--step-1); }
+.menu-item__dots { display: none; }
+.menu-item .price { order: 2; font-size: 1.0625rem; }
+.menu-item__desc { margin-top: 0.5rem; }
+
+/* ------------------------------------------------------------------- find */
+@media (min-width: 960px) {
+  .find__card { order: -1; position: sticky; top: calc(var(--header-h) + 1rem); }
+}
+.find__card { background: var(--c-bg-alt); box-shadow: none; border: 1px solid var(--c-line); }
+.step__marker { border-radius: var(--radius-sm); }
+
+/* ------------------------------------------------------------------ story */
+.story__grid { gap: 0; }
+.story__media { max-width: none; margin: 0; }
+.story__media::before { display: none; }
+.story__photo { aspect-ratio: 4 / 3; border-radius: var(--radius-lg); overflow: hidden; }
+.story__text {
+  position: relative; z-index: 1;
+  margin: -3rem 0.75rem 0;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: var(--radius-lg);
+  background: var(--c-bg);
+  box-shadow: var(--shadow-2);
+}
+@media (min-width: 900px) {
+  .story__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; }
+  .story__text { margin: 0 0 0 -5rem; }
+}
+.story .section-title { margin-block: 1rem 1.25rem; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem); }
+.story__p { color: var(--c-ink-soft); }
+.story__p--lead { color: var(--c-ink); font-size: var(--step-1); }
+.story__signoff { color: var(--c-ink-soft); }
+
+/* ---------------------------------------------------------------- gallery */
+/* An even strip of photos instead of a bento grid. */
+.gallery { grid-auto-rows: clamp(10rem, 44vw, 16rem); gap: 0.5rem; }
+@media (min-width: 768px) {
+  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: clamp(12rem, 22vw, 18rem); gap: 0.75rem; }
+  .gallery__item--wide { grid-column: span 2; grid-row: span 1; }
+  .gallery__item--tall { grid-row: span 1; }
+}
+.gallery__btn { border-radius: var(--radius-sm); }
+
+/* ---------------------------------------------------------------- reviews */
+.review { background: transparent; border: 1px solid color-mix(in srgb, var(--c-ink) 18%, transparent); }
+.review__mark { color: var(--c-accent); }
+.carousel__controls { justify-content: center; }
+
+/* ---------------------------------------------------------------- contact */
+.tile { background: transparent; border: 1px solid var(--c-line); }
+.tile__icon { border-radius: var(--radius-sm); }
+.qr-card { border-radius: var(--radius-lg); }
+
+/* ----------------------------------------------------------------- footer */
+.footer__name { letter-spacing: -0.02em; }

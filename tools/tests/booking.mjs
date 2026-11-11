@@ -221,6 +221,24 @@ let bookingCode = "";
   await admin.ctx.close();
 }
 
+// The "check availability" bar under the hero fills in the booking form and goes there.
+{
+  const { ctx, page } = await newPage(desktop);
+  await page.waitForSelector("[data-quick]:not([hidden])");
+  check("the quick bar shows once the booking system answers", true);
+  await page.fill("[data-quick-checkin]", "2026-11-20");
+  await page.selectOption("[data-quick-nights]", "3");
+  await page.selectOption("[data-quick-guests]", "3");
+  await page.click(".quick__go");
+  await waitRooms(page);
+  check("the quick bar copies dates, nights and guests into the form",
+    (await page.inputValue("[data-book-checkin]")) === "2026-11-20" && (await page.inputValue("[data-book-nights]")) === "3" && (await page.inputValue("[data-book-guests]")) === "3");
+  const arrived = await page.waitForFunction(() => Math.abs(document.querySelector("#booking").getBoundingClientRect().top) < 30, null, { timeout: 5000 }).then(() => true, () => false);
+  check("the quick bar scrolls to the booking form and focuses check-in", arrived && (await page.evaluate(() => document.activeElement.id)) === "book-checkin");
+  check("no console errors or CSP violations with the quick bar", await clean(page), await problems(page));
+  await ctx.close();
+}
+
 await browser.close();
 const failed = results.filter((r) => !r.ok);
 console.log(`\n${results.length - failed.length}/${results.length} checks passed`);

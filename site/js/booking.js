@@ -206,8 +206,33 @@
     ui.again.addEventListener("click", () => { ui.done.hidden = true; ui.form.hidden = false; loadRooms(); });
     ui.mCheck.addEventListener("click", () => manage(false));
     ui.mCancel.addEventListener("click", () => manage(true));
+    initQuick(today);
     return h;
   });
+
+  // The small "check availability" bar under the hero: fills in the real form, then goes there.
+  function initQuick(today) {
+    const form = $("[data-quick]");
+    if (!form) return;
+    const date = $("[data-quick-checkin]", form);
+    date.min = ui.checkIn.min;
+    date.max = ui.checkIn.max;
+    date.value = ui.checkIn.value;
+    form.hidden = false;
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const checkIn = isDate(date.value) && date.value >= today ? date.value : ui.checkIn.value;
+      window.ShopApi.prefill({
+        checkIn,
+        nights: parseInt($("[data-quick-nights]", form).value, 10),
+        guests: parseInt($("[data-quick-guests]", form).value, 10),
+      });
+      // Focus first (without scrolling), then scroll: focusing during a smooth scroll stops it.
+      ui.checkIn.focus({ preventScroll: true });
+      const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.getElementById("booking").scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
+    });
+  }
 
   // "Book this room" on a room card: choose it in the form, then let the link scroll there.
   document.addEventListener("click", (e) => {

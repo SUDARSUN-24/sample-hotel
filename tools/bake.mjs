@@ -103,8 +103,9 @@ const page404 = `<!doctype html>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="${R.esc(C.themes[C.theme].dark)}">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="preload" href="/assets/fonts/noto-serif-thai-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-sans-thai-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/hotel.css">
 <link rel="stylesheet" href="/css/shop.generated.css">
 <link rel="stylesheet" href="/css/404.css">
 <script src="/js/boot.js"></script>
