@@ -40,8 +40,22 @@ window.SHOP_CONFIG = {
      Every color becomes a CSS variable (see css/shop.generated.css).
      Text colors must keep 4.5:1 contrast with their backgrounds; run
      `node tools/tests/contrast.mjs` after changing them.                     */
-  theme: "lannaGarden", // CHANGE-ME: "lannaGarden" | "tropicalDusk" | "warmClassic" | "modernMinimal"
+  theme: "lagoonGold", // CHANGE-ME: "lagoonGold" | "lannaGarden" | "tropicalDusk" | "warmClassic" | "modernMinimal"
   themes: {
+    lagoonGold: {
+      displayFont: "sans",   // clean sans headings: this hotel's own look
+      bg: "#FBF7EF",         // page background (warm cream)
+      bgAlt: "#E6F0EC",      // alternate section background (pale lagoon)
+      sand: "#D5E5DF",       // cards, chips, highlights
+      ink: "#0F2A30",        // main text (deep teal-black)
+      inkSoft: "#44595D",    // secondary text
+      accent: "#14636E",     // buttons, links, active tab (lagoon teal)
+      accentInk: "#FBF7EF",  // text on accent
+      dark: "#0E3A42",       // dark sections (booking, footer): deep teal
+      onDark: "#F7F2E7",     // text on dark
+      onDarkSoft: "#B7D2CD", // secondary text on dark
+      glow: "#E2A84F",       // gold: decorative only on light backgrounds
+    },
     lannaGarden: {
       displayFont: "sans",   // clean sans headings: this hotel's own look
       bg: "#F5F3EE",         // page background (stone)

@@ -264,3 +264,26 @@ ul.sig-row {
 
 /* ----------------------------------------------------------------- footer */
 .footer__name { letter-spacing: -0.02em; }
+
+/* ------------------------------------------------------- gold highlights */
+/* Gold (--c-glow) is decoration on light backgrounds, and text or button
+   colour only on the deep teal, where it has 5.8:1 contrast. */
+.kicker__dot { background: var(--c-glow); }
+.section--dark .kicker, .quick__label { color: var(--c-glow); }
+.section-head .section-title::after {
+  content: ""; display: block; width: 3rem; height: 3px; margin: 1.1rem auto 0;
+  border-radius: 2px; background: var(--c-glow);
+}
+.book__intro .section-title::after, .contact .section-title::after { margin-inline: 0; }
+.section--dark, .site-footer {
+  background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--c-accent) 55%, var(--c-dark)) 0%, var(--c-dark) 60%);
+}
+.quick { background: linear-gradient(120deg, var(--c-dark), color-mix(in srgb, var(--c-accent) 60%, var(--c-dark))); }
+.quick__go { background: var(--c-glow); color: var(--c-dark); }
+/* A gold block behind the hero photo (a shadow, so the frame can keep clipping the parallax). */
+.hero__frame { box-shadow: 1.25rem 1.25rem 0 color-mix(in srgb, var(--c-glow) 85%, transparent); }
+@media (max-width: 899px) { .hero__frame { margin-inline-end: 1rem; box-shadow: 0.85rem 0.85rem 0 color-mix(in srgb, var(--c-glow) 85%, transparent); } }
+.sig-card__media { box-shadow: 0.75rem 0.75rem 0 var(--c-sand); }
+.sig-card:nth-child(even) .sig-card__media { box-shadow: -0.75rem 0.75rem 0 var(--c-sand); }
+.menu-item { border-top: 3px solid var(--c-glow); }
+.status__dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-glow) 30%, transparent); }
