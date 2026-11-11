@@ -222,6 +222,22 @@ window.SHOP_CONFIG = {
        price   per night, in baht, including breakfast,
        sleeps  the most guests the room takes,
        count   how many rooms of this type the hotel has.                    */
+  /* The teal band under the hero: four short reasons to stay. Icons come from
+     the sprite in index.html (pin, walk, car, leaf, sparkle, clock, check…). */
+  highlights: {
+    title: { th: "จุดเด่นของโรงแรม", en: "Why guests stay here" },
+    items: [
+      { icon: "sparkle", title: { th: "สระว่ายน้ำกลางสวนปาล์ม", en: "Pool in a palm garden" },
+        text: { th: "ว่ายน้ำใต้ร่มปาล์ม เงียบสงบกลางเมือง", en: "Swim under the palms, right in town." } },
+      { icon: "leaf", title: { th: "รวมอาหารเช้า", en: "Breakfast included" },
+        text: { th: "เสิร์ฟริมสระทุกเช้า ฝีมือแม่ครัวคนเดิม", en: "Served by the pool every morning." } },
+      { icon: "walk", title: { th: "เดิน 5 นาทีถึงประตูท่าแพ", en: "5 min to Tha Phae Gate" },
+        text: { th: "เดินเที่ยวเมืองเก่าได้สบาย", en: "Walk into the old city." } },
+      { icon: "check", title: { th: "จองออนไลน์ จ่ายที่โรงแรม", en: "Book online, pay here" },
+        text: { th: "ไม่ต้องใช้บัตรเครดิต", en: "No card needed to book." } },
+    ],
+  },
+
   signature: {
     title: { th: "ห้องพัก", en: "Rooms" },
     intro: {

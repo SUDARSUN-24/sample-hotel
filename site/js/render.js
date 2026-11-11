@@ -373,6 +373,22 @@
     );
   };
 
+  // The band under the hero: a few short reasons to stay, each with an icon.
+  sections.highlights = function (c) {
+    const h = c.highlights;
+    if (!h || !h.items || !h.items.length) return "";
+    return (
+      `<div class="container">` +
+      `<h2 class="visually-hidden" id="highlights-title">${t(h.title)}</h2>` +
+      `<ul class="highlights__list" role="list">` +
+      h.items.map((it) =>
+        `<li class="highlight reveal"><span class="highlight__icon" aria-hidden="true">${icon(it.icon || "sparkle")}</span>` +
+        `<span class="highlight__text"><strong class="highlight__title">${t(it.title)}</strong><span class="highlight__desc">${t(it.text)}</span></span></li>`
+      ).join("") +
+      `</ul></div>`
+    );
+  };
+
   sections.find = function (c) {
     const S = strings(c);
     const loc = c.location;

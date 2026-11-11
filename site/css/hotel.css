@@ -144,29 +144,43 @@ body { background: var(--c-bg); }
 .hero .quick :focus-visible { outline-color: var(--c-on-dark); }
 
 /* ------------------------------------------------------------------ rooms */
-/* One big row per room, photo and text swapping sides. */
+/* Two large cards per row on desktop: a photo on top, details on a white card. */
 ul.sig-row {
   display: grid; grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: minmax(0, 1fr);
-  gap: clamp(3rem, 7vw, 6rem);
+  gap: clamp(1.5rem, 3vw, 2.25rem);
   overflow: visible; scroll-snap-type: none;
   padding: 0; margin: 0; max-width: none;
 }
-.sig-card { display: grid; gap: 1.25rem; align-items: center; }
-@media (min-width: 900px) {
-  .sig-card { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 5rem); }
-  .sig-card:nth-child(even) { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-  .sig-card:nth-child(even) .sig-card__media { order: 2; }
+@media (min-width: 820px) { ul.sig-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sig-card {
+  display: flex; flex-direction: column;
+  border-radius: var(--radius-lg);
+  background: var(--c-card);
+  box-shadow: 0 1px 2px rgb(15 42 48 / 0.06), 0 18px 40px -22px rgb(15 42 48 / 0.35);
+  overflow: hidden;
+  transition: transform 0.5s var(--ease-out);
 }
-.sig-card__media { aspect-ratio: 3 / 2; border-radius: var(--radius-lg); }
-.sig-card__body { padding: 0; }
-.room-card__index { margin-bottom: 0.6rem; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-accent); }
-.sig-card__name { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.6rem); }
-:root[lang="en"] .sig-card__name { letter-spacing: -0.025em; line-height: 1.1; }
-.room-card__meta { margin-top: 0.6rem; font-size: 0.9375rem; font-weight: 500; }
-.sig-card__desc { margin-top: 0.9rem; max-width: 32rem; font-size: var(--step-0); line-height: var(--lh-body); }
-.room-card__price { margin-top: 1.25rem; padding-top: 1.1rem; border-top: 1px solid var(--c-line); }
+@media (hover: hover) { .sig-card:hover { transform: translateY(-4px); } }
+.sig-card__media { aspect-ratio: 16 / 10; border-radius: 0; }
+.sig-card__body {
+  flex: 1;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: repeat(4, auto) 1fr; column-gap: 1rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+.sig-card__body > * { grid-column: 1 / -1; }
+.room-card__index { margin-bottom: 0.4rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-accent); }
+.sig-card__name { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
+:root[lang="en"] .sig-card__name { letter-spacing: -0.025em; line-height: 1.12; }
+.room-card__meta { margin-top: 0.4rem; font-size: 0.9375rem; font-weight: 500; }
+.sig-card__desc { margin-top: 0.7rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--c-line); font-size: 0.9875rem; line-height: 1.65; }
+/* Price and button share the last row, pinned to the bottom so cards line up. */
+.room-card__price, .sig-card__body > .room-card__book { align-self: end; margin-top: 1.1rem; }
+.room-card__price { grid-column: 1; }
 .sig-card .price { font-size: 1.5rem; }
-.room-card__book { margin-top: 1.25rem; background: var(--c-accent); border-color: transparent; color: var(--c-accent-ink); }
+.sig-card__body > .room-card__book {
+  grid-column: 2; justify-self: end;
+  background: var(--c-accent); border-color: transparent; color: var(--c-accent-ink);
+}
 @media (hover: hover) { .room-card__book:hover { background: var(--c-accent); } }
 
 /* ---------------------------------------------------------------- booking */
@@ -283,7 +297,54 @@ ul.sig-row {
 /* A gold block behind the hero photo (a shadow, so the frame can keep clipping the parallax). */
 .hero__frame { box-shadow: 1.25rem 1.25rem 0 color-mix(in srgb, var(--c-glow) 85%, transparent); }
 @media (max-width: 899px) { .hero__frame { margin-inline-end: 1rem; box-shadow: 0.85rem 0.85rem 0 color-mix(in srgb, var(--c-glow) 85%, transparent); } }
-.sig-card__media { box-shadow: 0.75rem 0.75rem 0 var(--c-sand); }
-.sig-card:nth-child(even) .sig-card__media { box-shadow: -0.75rem 0.75rem 0 var(--c-sand); }
 .menu-item { border-top: 3px solid var(--c-glow); }
 .status__dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-glow) 30%, transparent); }
+
+/* ------------------------------------------------- colour for each section */
+/* Page rhythm: glowing hero → teal band → lagoon rooms → deep-teal booking →
+   gold dining → cream map → lagoon story → deep-teal gallery → gold reviews
+   → cream contact → deep-teal footer. */
+:root {
+  --c-card: color-mix(in srgb, var(--c-bg) 40%, #fff);
+  --c-gold-tint: color-mix(in srgb, var(--c-glow) 20%, var(--c-bg));
+}
+.hero {
+  background:
+    radial-gradient(38rem 26rem at 8% 10%, color-mix(in srgb, var(--c-glow) 26%, transparent), transparent 70%),
+    radial-gradient(44rem 30rem at 92% 85%, color-mix(in srgb, var(--c-accent) 18%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--c-bg), color-mix(in srgb, var(--c-bg-alt) 70%, var(--c-bg)));
+}
+.signature {
+  background:
+    radial-gradient(50rem 30rem at 100% 0%, color-mix(in srgb, var(--c-accent) 10%, transparent), transparent 70%),
+    var(--c-bg-alt);
+}
+.menu, .reviews { background: var(--c-gold-tint); }
+.menu-item, .review { background: var(--c-card); }
+.review { border-color: transparent; box-shadow: 0 14px 30px -20px rgb(15 42 48 / 0.35); }
+.story { background: var(--c-bg-alt); }
+.gallery-section .gallery__btn { box-shadow: 0 10px 30px -16px rgb(0 0 0 / 0.6); }
+.find__card { background: var(--c-card); }
+.tile { background: var(--c-card); }
+
+/* Teal band under the hero. Text is full cream (6.2:1 on the teal). */
+.highlights {
+  padding-block: clamp(1.75rem, 4vw, 2.5rem);
+  background: linear-gradient(100deg, var(--c-dark), var(--c-accent));
+  color: var(--c-on-dark);
+}
+.highlights__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 1rem; }
+@media (min-width: 900px) { .highlights__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; } }
+.highlight { display: flex; align-items: flex-start; gap: 0.85rem; }
+.highlight__icon {
+  display: grid; place-items: center; flex: none;
+  width: 2.75rem; height: 2.75rem; border-radius: 50%;
+  background: var(--c-glow); color: var(--c-dark);
+}
+.highlight__icon .icon { width: 1.3rem; height: 1.3rem; }
+.highlight__text { display: grid; gap: 0.15rem; line-height: 1.4; }
+.highlight__title { font-weight: 600; font-size: 1rem; }
+.highlight__desc { font-size: 0.875rem; }
+@media (max-width: 519px) {
+  .highlights__list { grid-template-columns: minmax(0, 1fr); }
+}
