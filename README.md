@@ -212,8 +212,19 @@ npx netlify-cli deploy --prod
    `curl -I https://<address>` should show `content-security-policy`.
 3. Optional: **Domain management → Add a domain** for the hotel's own domain (free HTTPS).
 
-Updating later: edit config → `node tools/bake.mjs` → `npx netlify-cli deploy --prod`.
-After changing `ADMIN_KEY`, deploy again: functions read it at deploy time.
+**Updating later (this copy is connected to GitHub and Netlify):** the working folder is
+`C:\Projects\sample-hotel`. Edit, check it locally (`npm run serve`), then
+
+```bash
+git add -A
+git commit -m "What you changed"
+git push
+```
+
+The push updates GitHub (`SUDARSUN-24/sample-hotel`), and Netlify then builds and publishes the
+site by itself within a minute or two (it runs `node tools/bake.mjs` first, so config edits always
+apply). Watch it under **Deploys** in the Netlify dashboard. Nothing goes live until you push.
+After changing `ADMIN_KEY`, push or redeploy: functions read it at deploy time.
 
 > **Note (November 2026):** Netlify's free plan adds a "Hosted on Netlify" badge script to every
 > page. This site's security policy blocks it, so the badge doesn't show, but the browser console

@@ -1,10 +1,13 @@
 # netlify.toml — settings for Netlify: which folder is the website, where the
 # backend functions are, and the security + cache headers.
-# Deploy from the project folder:  npx netlify-cli deploy --prod
+# Deploys happen by themselves: every push to the GitHub repo's main branch is
+# built and published by Netlify. (Manual deploy still works too:
+# npx netlify-cli deploy --prod from the project folder.)
 # After deploying, check the headers really arrived:  curl -I https://YOUR-SITE.netlify.app
 
 [build]
   publish = "site"          # the website itself
+  command = "node tools/bake.mjs"   # re-bake from config.js, so config edits always go live
 
 [functions]
   directory = "netlify/functions"   # the booking + order backend (/api/*)
