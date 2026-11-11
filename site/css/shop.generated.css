@@ -10,7 +10,8 @@
   --c-dark: #0E3A42;
   --c-on-dark: #F7F2E7;
   --c-on-dark-soft: #B7D2CD;
-  --c-glow: #E2A84F;
+  --c-glow: #BFE6DF;
+  --c-tint: #EAF2F6;
   --font-display: var(--font-sans);
 }
 .ph-hero{background-image:url(data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAACQBACdASoYABMAPu1gqU4ppSOiMBgMATAdiWIArDKAARMnsuWK3p9Uo8ZG/MgA/RJfTAkDHrmL5LlX8NM+9zAWzJdUktlKQyrTIq6vYaSvrgChDD46GAL87z+eMB2HLwF+yXtb4oAgBbEK11N7XaNx+OgAAA==);background-position:50% 62%}.ph-hero img{object-position:50% 62%}

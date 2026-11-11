@@ -279,9 +279,9 @@ ul.sig-row {
 /* ----------------------------------------------------------------- footer */
 .footer__name { letter-spacing: -0.02em; }
 
-/* ------------------------------------------------------- gold highlights */
-/* Gold (--c-glow) is decoration on light backgrounds, and text or button
-   colour only on the deep teal, where it has 5.8:1 contrast. */
+/* ------------------------------------------------------ seafoam highlights */
+/* Seafoam (--c-glow) is decoration on light backgrounds, and text or button
+   colour on the deep teal, where it has 9:1 contrast. */
 .kicker__dot { background: var(--c-glow); }
 .section--dark .kicker, .quick__label { color: var(--c-glow); }
 .section-head .section-title::after {
@@ -294,7 +294,7 @@ ul.sig-row {
 }
 .quick { background: linear-gradient(120deg, var(--c-dark), color-mix(in srgb, var(--c-accent) 60%, var(--c-dark))); }
 .quick__go { background: var(--c-glow); color: var(--c-dark); }
-/* A gold block behind the hero photo (a shadow, so the frame can keep clipping the parallax). */
+/* A seafoam block behind the hero photo (a shadow, so the frame can keep clipping the parallax). */
 .hero__frame { box-shadow: 1.25rem 1.25rem 0 color-mix(in srgb, var(--c-glow) 85%, transparent); }
 @media (max-width: 899px) { .hero__frame { margin-inline-end: 1rem; box-shadow: 0.85rem 0.85rem 0 color-mix(in srgb, var(--c-glow) 85%, transparent); } }
 .menu-item { border-top: 3px solid var(--c-glow); }
@@ -302,15 +302,15 @@ ul.sig-row {
 
 /* ------------------------------------------------- colour for each section */
 /* Page rhythm: glowing hero → teal band → lagoon rooms → deep-teal booking →
-   gold dining → cream map → lagoon story → deep-teal gallery → gold reviews
+   sky dining → cream map → lagoon story → deep-teal gallery → sky reviews
    → cream contact → deep-teal footer. */
 :root {
   --c-card: color-mix(in srgb, var(--c-bg) 40%, #fff);
-  --c-gold-tint: color-mix(in srgb, var(--c-glow) 20%, var(--c-bg));
+  --c-tint-bg: var(--c-tint, color-mix(in srgb, var(--c-accent) 6%, var(--c-bg)));
 }
 .hero {
   background:
-    radial-gradient(38rem 26rem at 8% 10%, color-mix(in srgb, var(--c-glow) 26%, transparent), transparent 70%),
+    radial-gradient(38rem 26rem at 8% 10%, color-mix(in srgb, var(--c-glow) 45%, transparent), transparent 70%),
     radial-gradient(44rem 30rem at 92% 85%, color-mix(in srgb, var(--c-accent) 18%, transparent), transparent 70%),
     linear-gradient(180deg, var(--c-bg), color-mix(in srgb, var(--c-bg-alt) 70%, var(--c-bg)));
 }
@@ -319,7 +319,7 @@ ul.sig-row {
     radial-gradient(50rem 30rem at 100% 0%, color-mix(in srgb, var(--c-accent) 10%, transparent), transparent 70%),
     var(--c-bg-alt);
 }
-.menu, .reviews { background: var(--c-gold-tint); }
+.menu, .reviews { background: var(--c-tint-bg); }
 .menu-item, .review { background: var(--c-card); }
 .review { border-color: transparent; box-shadow: 0 14px 30px -20px rgb(15 42 48 / 0.35); }
 .story { background: var(--c-bg-alt); }

@@ -280,7 +280,7 @@ async function newPage(options = {}) {
   const { ctx, page } = await newPage();
   await page.route("**/config.js", async (route) => {
     const res = await route.fetch();
-    const body = (await res.text()).replace('en: "Sample Hotel" }', 'en: "Preview Hotel" }').replace('theme: "lagoonGold"', 'theme: "warmClassic"');
+    const body = (await res.text()).replace('en: "Sample Hotel" }', 'en: "Preview Hotel" }').replace('theme: "lagoonMist"', 'theme: "warmClassic"');
     route.fulfill({ response: res, body });
   });
   const info = [];
