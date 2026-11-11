@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>เคาน์เตอร์ · Front desk</title>
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/shop.generated.css">
+<link rel="stylesheet" href="css/booking.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+<!-- The front desk dashboard: one day's arrivals, guests in house and departures,
+     from the backend (/api/admin). It shows nothing without the staff key
+     (the ADMIN_KEY setting on Netlify). All the logic is in js/admin.js. -->
+<main class="admin__wrap">
+  <header class="admin__head">
+    <div>
+      <p class="admin__eyebrow">เคาน์เตอร์ · Front desk</p>
+      <h1 class="admin__title" data-shop>Dashboard</h1>
+    </div>
+    <button type="button" class="btn btn--ghost" data-signout hidden>ออกจากระบบ · Sign out</button>
+  </header>
+
+  <section class="admin__login" data-login>
+    <div class="field">
+      <label class="field__label" for="admin-key">รหัสพนักงาน · Staff key</label>
+      <input class="field__input" id="admin-key" type="password" autocomplete="current-password" data-key>
+    </div>
+    <button type="button" class="btn btn--primary" data-signin>เข้าสู่ระบบ · Sign in</button>
+    <p class="book__error" data-login-error role="alert"></p>
+  </section>
+
+  <section data-board hidden>
+    <div class="admin__bar">
+      <button type="button" class="btn btn--ghost" data-prev aria-label="วันก่อนหน้า · Previous day">‹</button>
+      <label class="visually-hidden" for="admin-date">วันที่ · Date</label>
+      <input class="field__input admin__date" id="admin-date" type="date" data-date>
+      <button type="button" class="btn btn--ghost" data-next aria-label="วันถัดไป · Next day">›</button>
+      <button type="button" class="btn btn--ghost" data-today>วันนี้ · Today</button>
+      <p class="admin__updated" data-updated role="status"></p>
+    </div>
+
+    <dl class="admin__tiles">
+      <div><dt>เข้าพัก · Arrivals</dt><dd data-sum="arrivals">0</dd></div>
+      <div><dt>เช็กเอาต์ · Departures</dt><dd data-sum="departures">0</dd></div>
+      <div><dt>ห้องที่มีแขกคืนนี้ · Occupied tonight</dt><dd data-sum="occupied">0</dd></div>
+      <div><dt>รายได้ห้องคืนนี้ · Room revenue tonight</dt><dd data-sum="revenue">0</dd></div>
+    </dl>
+
+    <ul class="admin__rooms" data-rooms role="list" aria-label="ห้องว่างคืนนี้ · Rooms tonight"></ul>
+
+    <div class="admin__cols admin__cols--3">
+      <section aria-labelledby="h-arrivals">
+        <h2 class="admin__h" id="h-arrivals">เข้าพักวันนี้ · Arriving</h2>
+        <ul class="admin__list" data-arrivals role="list"></ul>
+      </section>
+      <section aria-labelledby="h-inhouse">
+        <h2 class="admin__h" id="h-inhouse">พักอยู่ · In house</h2>
+        <ul class="admin__list" data-inhouse role="list"></ul>
+      </section>
+      <section aria-labelledby="h-departures">
+        <h2 class="admin__h" id="h-departures">เช็กเอาต์วันนี้ · Leaving</h2>
+        <ul class="admin__list" data-departures role="list"></ul>
+      </section>
+    </div>
+  </section>
+</main>
+<script src="js/admin.js" defer></script>
+</body>
+</html>

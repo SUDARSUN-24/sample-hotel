@@ -1,0 +1,16 @@
+node_modules/
+tools/node_modules/
+shots/
+*.log
+.DS_Store
+Thumbs.db
+
+# Local Netlify folder
+.netlify
+
+# The staff key for /admin.html (also set as ADMIN_KEY on Netlify). Never commit it.
+ADMIN-KEY.txt
+
+# Vercel link and tokens (never commit)
+.vercel
+.env*
